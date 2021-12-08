@@ -1,6 +1,7 @@
 package Ontap;
 
 import javax.swing.*;
+import javax.swing.table.TableColumn;
 import java.awt.*;
 
 /**
@@ -16,6 +17,7 @@ public class SinhVienFrame extends JFrame {
     SinhVienFrame(){
         setDefaultLookAndFeelDecorated(true);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
+//        setPreferredSize(new Dimension(700, 500));
 
         setContentPane(mainPanel);
         mainPanel.setLayout(new BorderLayout());
@@ -40,47 +42,15 @@ public class SinhVienFrame extends JFrame {
         JPanel panel = new JPanel();
         panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
 
-        JPanel panelInformation = new JPanel();
-        panelInformation.setLayout(new GridBagLayout());
-        addInformationComponent(panelInformation);
 
-        panel.add(panelInformation);
+        InformationPanel informationPanel = new InformationPanel();
+        ButtonPanel buttonPanel = new ButtonPanel();
+
+
+        panel.add(informationPanel);
+        panel.add(buttonPanel);
         mainPanel.add(panel, BorderLayout.WEST);
     }
-
-    private void addInformationComponent(JPanel panelInformation) {
-
-        JLabel IDText = new JLabel("Student ID");
-        JTextField IDTextField = new JTextField();
-        panelInformation.add(IDText);
-        panelInformation.add(IDTextField);
-
-        JLabel NameText = new JLabel("Student Name");
-        JTextField NameTextField = new JTextField();
-        panelInformation.add(NameText);
-        panelInformation.add(NameTextField);
-
-        JLabel GPAText = new JLabel("GPA");
-        JTextField GPATextField = new JTextField();
-        panelInformation.add(GPAText);
-        panelInformation.add(GPATextField);
-
-        JLabel NoteText = new JLabel("Note");
-        JTextArea NoteTextField = new JTextArea();
-        panelInformation.add(NoteText);
-        panelInformation.add(NoteTextField);
-
-        JLabel ImageText = new JLabel("Image");
-        JTextField ImageTextField = new JTextField();
-        panelInformation.add(ImageText);
-        panelInformation.add(ImageTextField);
-
-
-
-
-
-    }
-
 
     private void addCenter() {
         String[] columnNames = {"ID", "Name", "GPA", "Address"};
@@ -89,9 +59,10 @@ public class SinhVienFrame extends JFrame {
                 {"19127599", "Nguyễn Văn Minh Triết", "6.5", "Quảng Nam"}
         };
 
-        JTable tables = new JTable(data, columnNames);
-        JScrollPane sp = new JScrollPane(tables);
+        TableSinhVien tbSV = new TableSinhVien(data, columnNames);
+        tbSV.insertData(new String[]{"19123456", "abc", "6.0", "Loc Ninh"});
 
+        JScrollPane sp = new JScrollPane(tbSV);
         mainPanel.add(sp, BorderLayout.CENTER);
     }
 

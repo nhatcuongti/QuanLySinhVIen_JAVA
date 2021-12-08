@@ -14,6 +14,7 @@ public class Main {
      * event-dispatching thread.
      */
     private static void createAndShowGUI() {
+
 //        new LoginFrame();
         new SinhVienFrame();
     }
