@@ -84,5 +84,6 @@ public class LoginFrame extends JFrame implements ActionListener {
         else{
             JOptionPane.showMessageDialog(null, "Your information is not valid", "Failed to connect", JOptionPane.CANCEL_OPTION);
         }
+
     }
 }
