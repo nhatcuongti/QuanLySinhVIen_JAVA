@@ -181,12 +181,15 @@ public class TableSinhVien extends JTable {
             br = new BufferedReader(
                     new InputStreamReader(
                             new FileInputStream(file),charset));
-
             while (true){
                 String ID = br.readLine();
                 System.out.println(ID);
                 if (null == ID)
                     break;
+
+                if (ID.charAt(0) < 33  || ID.charAt(0) > 126 )
+                    ID = ID.substring(1);
+
 
                 String Name = br.readLine();
                 String GPA = br.readLine();
