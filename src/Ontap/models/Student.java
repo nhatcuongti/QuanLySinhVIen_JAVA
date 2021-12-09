@@ -8,6 +8,22 @@ public class Student {
     private String ID, Name, Image, Address, Notes;
     private double GPA;
 
+    public String getName() {
+        return Name;
+    }
+
+    public String getImage() {
+        return Image;
+    }
+
+    public String getAddress() {
+        return Address;
+    }
+
+    public String getNotes() {
+        return Notes;
+    }
+
     /**
      * Default Constructor
      */

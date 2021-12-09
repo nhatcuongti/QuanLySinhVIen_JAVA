@@ -15,14 +15,14 @@ public class Main {
      */
     private static void createAndShowGUI() {
 
-//        new LoginFrame();
-        new SinhVienFrame();
+        new LoginFrame();
+//        new SinhVienFrame(new DBSinhVien("sa", "0909845284", "ManageStudent"));
     }
 
     public static void main(String[] args) throws SQLException, ClassNotFoundException {
         //Schedule a job for the event-dispatching thread:
         //creating and showing this application's GUI.
-       // Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
+        Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
         javax.swing.SwingUtilities.invokeLater(new Runnable() {
             public void run() {
                 createAndShowGUI();

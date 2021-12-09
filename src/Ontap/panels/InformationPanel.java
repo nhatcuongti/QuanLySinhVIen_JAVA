@@ -1,4 +1,4 @@
-package Ontap;
+package Ontap.panels;
 
 import javax.swing.*;
 import java.awt.*;
@@ -11,7 +11,7 @@ public class InformationPanel extends JPanel {
     JTextField imgField = new JTextField();
     JTextArea noteField = new JTextArea();
 
-    InformationPanel(){
+    public InformationPanel(){
         setLayout(new GridBagLayout());
         //Set gbc
         GridBagConstraints gbc = new GridBagConstraints();

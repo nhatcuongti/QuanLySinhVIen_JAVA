@@ -1,4 +1,7 @@
-package Ontap;
+package Ontap.panels;
+
+import Ontap.utils.TableSinhVien;
+import Ontap.utils.DBSinhVien;
 
 import javax.swing.*;
 import java.awt.*;
@@ -13,11 +16,14 @@ public class ButtonPanel extends JPanel  implements ActionListener{
     JButton Clear = new JButton("Clear");
     JButton Export = new JButton("Export");
     JButton Import = new JButton("Import");
+    JButton exportDatabase = new JButton("Export to database");
 
     InformationPanel informationPanel;
     TableSinhVien tbSV;
+    DBSinhVien dbSinhVien;
 
-    ButtonPanel(InformationPanel informationPanel, TableSinhVien tbSV){
+    public ButtonPanel(InformationPanel informationPanel, TableSinhVien tbSV, DBSinhVien db){
+        dbSinhVien = db;
         this.informationPanel = informationPanel;
         this.tbSV = tbSV;
 
@@ -66,7 +72,15 @@ public class ButtonPanel extends JPanel  implements ActionListener{
         gbc.gridwidth = 3;
         add(Import, gbc);
         Import.addActionListener(this);
+
+        //Button "Import"
+        gbc.gridx = 0;
+        gbc.gridy = 4;
+        gbc.gridwidth = 3;
+        add(exportDatabase, gbc);
+        exportDatabase.addActionListener(this);
     }
+
 
     @Override
     public void actionPerformed(ActionEvent e) {
@@ -108,6 +122,11 @@ public class ButtonPanel extends JPanel  implements ActionListener{
                 File file = new File(fileChooser.getSelectedFile().getAbsolutePath());
                 tbSV.exportDataFile(file);
             }
+        }
+        else if (exportDatabase.equals(e.getSource())){
+            dbSinhVien.resetData();
+            tbSV.exportDatabase(dbSinhVien);
+
         }
 
 

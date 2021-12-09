@@ -1,12 +1,16 @@
 package Ontap;
 
+import Ontap.panels.ButtonPanel;
+import Ontap.panels.InformationPanel;
+import Ontap.utils.DBSinhVien;
+import Ontap.utils.TableSinhVien;
+
 import javax.swing.*;
-import javax.swing.event.ListSelectionEvent;
-import javax.swing.event.ListSelectionListener;
 import javax.swing.table.DefaultTableModel;
-import javax.swing.table.TableColumn;
 import javax.swing.table.TableModel;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
@@ -23,7 +27,8 @@ public class SinhVienFrame extends JFrame {
     InformationPanel informationPanel;
     JButton Back;
 
-    SinhVienFrame(){
+
+    SinhVienFrame(DBSinhVien db){
         setDefaultLookAndFeelDecorated(true);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
 //        setPreferredSize(new Dimension(700, 500));
@@ -32,28 +37,37 @@ public class SinhVienFrame extends JFrame {
         mainPanel.setLayout(new BorderLayout());
         addPageStart();
         addCenter();
-        addPageWest();
+        addPageWest(db);
 
         setVisible(true);
         pack();
     }
+
+
 
     private void addPageStart() {
         Back = new JButton("Return");
         JPanel panel = new JPanel();
         panel.setLayout(new BoxLayout(panel, BoxLayout.X_AXIS));
         panel.add(Back);
+        Back.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                dispose();
+                LoginFrame loginFrame = new LoginFrame();
+            }
+        });
 
         mainPanel.add(panel, BorderLayout.PAGE_START);
     }
 
-    private void addPageWest() {
+    private void addPageWest(DBSinhVien db) {
         JPanel panel = new JPanel();
         panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
 
 
         informationPanel = new InformationPanel();
-        buttonPanel = new ButtonPanel(informationPanel, tbSV);
+        buttonPanel = new ButtonPanel(informationPanel, tbSV, db);
 
 
         panel.add(informationPanel);

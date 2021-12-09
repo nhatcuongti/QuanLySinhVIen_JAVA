@@ -1,13 +1,14 @@
 package Ontap.models;
 
+import Ontap.utils.DBSinhVien;
+
 import java.io.*;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Comparator;
-import java.util.Scanner;
 
 public class ListStudent {
     private ArrayList<Student> dataStudent;
+
 
     /**
      * Constructor with parameter
@@ -135,41 +136,6 @@ public class ListStudent {
 
     }
 
-    /**
-     * Import student from file txt
-     * @param fileName
-     * @throws IOException
-     */
-    public void importStudentFromFileTXT(String fileName) throws IOException {
-        dataStudent.clear();
-        InputStream in = ClassLoader.getSystemClassLoader().getResourceAsStream(fileName);
-        BufferedReader br = null;
-
-        if (in == null) {
-            fileName = "file/" + fileName;
-            br = new BufferedReader(new FileReader(fileName));
-        }
-        else
-            br = new BufferedReader(new InputStreamReader(in));
-
-        while (true){
-            String id = br.readLine();
-            if (null == id)
-                break;
-
-            String name = br.readLine();
-            double gpa = Double.valueOf(br.readLine()).doubleValue();
-            String image = br.readLine();
-            String address = br.readLine();
-            String Notes = br.readLine();
-            br.readLine();
-
-            Student newStudent = new Student(id, name, image, address, Notes, gpa);
-
-            dataStudent.add(newStudent);
-        }
-        br.close();
-    }
 
     /**
      * Add new student to file
@@ -264,6 +230,24 @@ public class ListStudent {
             return true;
 
         return false;
+    }
+
+    public void exportDataToDatabase(DBSinhVien dbSinhVien) {
+        for (Student student : dataStudent){
+            String ID = student.getID();
+            String Name = student.getName();
+            double GPA = student.getGPA();
+            String Address = student.getAddress();
+            String Note = student.getNotes();
+            String Img = student.getImage();
+
+            dbSinhVien.insertData(ID, Name, GPA, Address, Note, Img);
+        }
+    }
+
+    public void resetData(){
+        dataStudent = new ArrayList<Student>();
+        System.out.println("Reset Data");
     }
 }
 

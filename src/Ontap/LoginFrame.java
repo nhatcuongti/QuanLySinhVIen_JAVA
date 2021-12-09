@@ -1,5 +1,7 @@
 package Ontap;
 
+import Ontap.utils.DBSinhVien;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -79,7 +81,7 @@ public class LoginFrame extends JFrame implements ActionListener {
         DBSinhVien db = new DBSinhVien(userDatabase.getText(),passwordDatabase.getText(), databaseName.getText());
         if (db.isValid()){
             dispose();
-            SinhVienFrame svFrame = new SinhVienFrame();
+            SinhVienFrame svFrame = new SinhVienFrame(db);
         }
         else{
             JOptionPane.showMessageDialog(null, "Your information is not valid", "Failed to connect", JOptionPane.CANCEL_OPTION);
