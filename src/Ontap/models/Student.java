@@ -96,108 +96,35 @@ public class Student {
      * Update information for student
      */
 
-    public boolean updateInforStudent() {
-        String IDOld = ID;
-        String NameOld = Name;
-        String AddressOld = Address;
-        String ImageOld = Image;
-        double GPAOld = GPA;
-        String NotesOld = Notes;
-        Scanner sc = new Scanner(System.in);
-        System.out.println("--------------------------------------------------------");
-
-        System.out.println("1. ID  2. Name  3. GPA  4. Image  5. Address  6. Notes");
-        System.out.print("Choose one attributes you want to upload : ");
-        String numberAttribute = sc.nextLine();
-        int nb = Integer.valueOf(numberAttribute);
-        switch (nb) {
-            case 1:
-                System.out.println("Old ID : " + ID);
-                System.out.print("Press new ID : ");
-                ID = sc.nextLine();
-                break;
-            case 2:
-                System.out.println("Old Name : " + Name);
-                System.out.print("Press new Name : ");
-                Name = sc.nextLine();
-                break;
-            case 3:
-                System.out.println("Old GPA : " + GPA);
-                System.out.print("Press new GPA : ");
-                GPA = sc.nextDouble();
-                sc.nextLine();
-                break;
-            case 4:
-                System.out.println("Old Image : " + Image);
-                System.out.print("Press new Image : ");
-                Image = sc.nextLine();
-                break;
-            case 5:
-                System.out.println("Old Address : " + Address);
-                System.out.print("Press new Address : ");
-                Address = sc.nextLine();
-                break;
-            case 6:
-                System.out.println("Old Notes : " + Notes);
-                System.out.print("Press new Notes : ");
-                Notes = sc.nextLine();
-                break;
-            default:
-                System.out.println("Your number is not correct !");
-                break;
-        }
-
-        while(true) {
-
-            System.out.println("Student's new data is ");
-            showInforStudent();
-
-            System.out.println("Do you want to update : ");
-            System.out.println("1. Yes   2. No");
-
-            String option = sc.nextLine();
-            int numberChoice;
-            try {
-                numberChoice = Integer.valueOf(option).intValue();
-            } catch (NumberFormatException e) {
-                numberChoice = 0;
-            }
-
-            switch (numberChoice) {
-                case 1:
-                    return true;
-                case 2:
-                    ID = IDOld;
-                    Name = NameOld;
-                    Address = AddressOld;
-                    Image = ImageOld;
-                    Notes = NotesOld;
-                    GPA = GPAOld;
-                    return false;
-                default:
-                    System.out.println("Your choice is invalid ! Try again");
-                    break;
-
-            }
-        }
-
-
+    public void updateInforStudent(String ID, String name, String image, String address, String notes, double GPA) {
+        this.ID = ID;
+        Name = name;
+        Image = image;
+        Address = address;
+        Notes = notes;
+        this.GPA = GPA;
     }
 
     /**
-     * WRite data to file
-     * @param ps
+     *
+     * @param bw
      * @throws IOException
      */
 
-    public void writeInforToFileTxt(PrintStream ps) throws IOException {
-        ps.println(ID);
-        ps.println(Name);
-        ps.println(GPA);
-        ps.println(Image);
-        ps.println(Address);
-        ps.println(Notes);
-        ps.println();
+    public void writeInforToFileTxt(BufferedWriter bw) throws IOException {
+        bw.write(ID);
+        bw.newLine();
+        bw.write(Name);
+        bw.newLine();
+        bw.write(String.valueOf(GPA));
+        bw.newLine();
+        bw.write(Image);
+        bw.newLine();
+        bw.write(Address);
+        bw.newLine();
+        bw.write(Notes);
+        bw.newLine();
+        bw.newLine();
     }
 
     /**

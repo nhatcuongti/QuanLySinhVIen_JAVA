@@ -4,6 +4,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.File;
 
 public class ButtonPanel extends JPanel  implements ActionListener{
     JButton Add = new JButton("Add");
@@ -57,34 +58,59 @@ public class ButtonPanel extends JPanel  implements ActionListener{
 
         gbc.gridwidth = 3;
         add(Export, gbc);
+        Export.addActionListener(this);
 
         //Button "Import"
         gbc.gridx = 0;
         gbc.gridy = 3;
         gbc.gridwidth = 3;
         add(Import, gbc);
+        Import.addActionListener(this);
     }
 
     @Override
     public void actionPerformed(ActionEvent e) {
         if (Delete.equals(e.getSource())) {
-            tbSV.deleteData();
+            tbSV.deleteData(informationPanel.getData()[0]);
             informationPanel.resetData();
         }
         else if (Add.equals(e.getSource())) {
             if (informationPanel.checkFilled()) {
-                tbSV.insertData(informationPanel.getData());
+                boolean isSuccessfull =  tbSV.insertData(informationPanel.getData());
 
-                informationPanel.resetData();
+                if (isSuccessfull)
+                    informationPanel.resetData();
             }
         }
         else if (Update.equals(e.getSource())) {
-                tbSV.updateData(informationPanel.getData());
+            boolean isSuccessfull = tbSV.updateData(informationPanel.getData());
+
+            if (isSuccessfull)
                 informationPanel.resetData();
         }
         else if (Clear.equals(e.getSource())) {
             informationPanel.resetData();
         }
+        else if(Import.equals(e.getSource())){
+            JFileChooser fileChooser = new JFileChooser();
+            int response = fileChooser.showOpenDialog(null);
+
+            if (response == JFileChooser.APPROVE_OPTION){
+                File file = new File(fileChooser.getSelectedFile().getAbsolutePath());
+                tbSV.imporDataFromFile(file);
+            }
+        }
+        else if(Export.equals(e.getSource())){
+            JFileChooser fileChooser = new JFileChooser();
+            int response = fileChooser.showOpenDialog(null);
+
+            if (response == JFileChooser.APPROVE_OPTION){
+                File file = new File(fileChooser.getSelectedFile().getAbsolutePath());
+                tbSV.exportDataFile(file);
+            }
+        }
+
+
 
     }
 }

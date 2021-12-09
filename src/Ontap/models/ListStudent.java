@@ -32,7 +32,7 @@ public class ListStudent {
                 isValid = false;
 
         if (!isValid)
-            return "New student's ID (" + newStudent.getID() + ") is not unique !!";
+            return "New student's ID (" + newStudent.getID() + ") is Exists !!";
 
         //Check range of GPA
         if (newStudent.getGPA() > 4 || newStudent.getGPA() < 0)
@@ -49,7 +49,16 @@ public class ListStudent {
     public String addStudent(String[] data){
         String ID = data[0];
         String Name = data[1];
-        double GPA = Double.valueOf(data[2]).doubleValue();
+        double GPA = 0;
+        try {
+            GPA = Double.valueOf(data[2]).doubleValue();
+        }
+        catch (NumberFormatException e)
+        {
+            return "GPA is not number";
+        }
+
+
         String Address = data[3];
         String Img = data[4];
         String Note = data[5];
@@ -67,10 +76,6 @@ public class ListStudent {
     /**
      * View all student on list
      */
-    public void viewStudent(){
-        for (int i = 0; i < dataStudent.size(); i++)
-            dataStudent.get(i).showInforStudent();
-    }
 
     public int getOrderOneStudent(String ID){
         for (int i = 0; i < dataStudent.size(); i++)
@@ -83,57 +88,51 @@ public class ListStudent {
     /**
      * Delete one student on list
      */
-    public void deleteStudent(){
-        String idDel = "";
-        boolean isFirst = true;
-        int orderNumber;
-        while (true) {
-            Scanner sc = new Scanner(System.in);
-            viewStudent();
-            if (!isFirst)
-                System.out.println("ID " + idDel + " is not exists !! Choose again");
-
-            System.out.print("Press ID student you want to remove : ");
-            idDel = sc.nextLine();
-
-            orderNumber = getOrderOneStudent(idDel);
-            if (orderNumber != -1)
-                break;
-
-            isFirst = false;
-        }
-
-        System.out.println("Delete Successfully student with ID " + idDel);
-
+    public void deleteStudent(String ID){
+        int orderNumber = getOrderOneStudent(ID);
         dataStudent.remove(orderNumber);
     }
 
     /**
-     * Write data student to file TXT
-     * @param fileName
+     *
+     * @param file
      * @throws IOException
      */
-    public void writeStudentToFileTXT(String fileName) throws IOException {
+    public void writeStudentToFileTXT(File file) throws IOException {
 
-        PrintStream ps = new PrintStream(fileName);
+        BufferedWriter bw = new BufferedWriter(
+                new OutputStreamWriter(
+                        new FileOutputStream(file),"UTF-8"));
+
         for (int i = 0; i < dataStudent.size(); i++)
-            dataStudent.get(i).writeInforToFileTxt(ps);
+            dataStudent.get(i).writeInforToFileTxt(bw);
 
-        ps.close();
+        bw.close();
     }
 
     /**
-     * Write student to file CSV
-     * @param fileName
-     * @throws FileNotFoundException
+     *
+     * @param file
+     * @throws IOException
      */
-    public void writeStudentToFileCSV(String fileName) throws FileNotFoundException {
+    public void writeStudentToFileCSV(File file) throws IOException {
 
-        PrintStream ps = new PrintStream(fileName);
-        ps.println("ID,Name,GPA,image,address,notes");
-        for (int i = 0; i < dataStudent.size(); i++)
-            ps.println(dataStudent.get(i).convertToCSVString());
-        ps.close();
+        BufferedWriter bw = new BufferedWriter(
+                new OutputStreamWriter(
+                        new FileOutputStream(file),"UTF-8"));
+
+
+
+        bw.write("ID,Name,GPA,image,address,notes");
+        bw.newLine();
+
+        for (int i = 0; i < dataStudent.size(); i++) {
+            bw.write(dataStudent.get(i).convertToCSVString());
+            bw.newLine();
+        }
+
+        bw.close();
+
     }
 
     /**
@@ -208,49 +207,51 @@ public class ListStudent {
      * @param order
      * @return
      */
-    boolean isUpdatedDataValid(int order){
+    public String isUpdatedDataValid(int order, String updateID, double GPA){
         boolean isValid = true;
         for (int i = 0; i < dataStudent.size(); i++)
-            if (i != order && dataStudent.get(i).getID().equals(dataStudent.get(order).getID())){
+            if (i != order && dataStudent.get(i).getID().equals(updateID)){
                 isValid = false;
-                System.out.println("Updated Student's ID (" + dataStudent.get(order).getID() + ") is not unique");
-                break;
+                return "Updated Student's ID (" + updateID + ") is Exist !!";
             }
 
-        if (dataStudent.get(order).getGPA() > 4.0 || dataStudent.get(order).getGPA() < 0){
+        if (GPA > 4.0 || GPA < 0){
             isValid = false;
-            System.out.println("Updated student's GPA (" + dataStudent.get(order).getGPA() +
-                    " is out of range (0 -> 4)");
+            return "Updated student's GPA (" + GPA + " is out of range (0 -> 4)";
         }
 
-        return isValid;
+        return "";
     }
 
     /**
      * Update student
      */
-    public void updateStudent() {
-        Scanner sc = new Scanner(System.in);
-
-        String idUpdate = null;
-
-        System.out.println("There are list of student : ");
-        viewStudent();
-        System.out.print("Press Student's ID who you want to update : ");
-        idUpdate = sc.nextLine();
-
-        int order = getOrderOneStudent(idUpdate);
-        if (order == -1)
-            System.out.println("ID You press (" + idUpdate + ") is not valid");
-        else {
-            boolean isSuccess = dataStudent.get(order).updateInforStudent();
-            if (!isUpdatedDataValid(order)) {
-                System.out.println("Updated data is not valid !! ");
-            }
-            else if (isSuccess)
-                System.out.println("Successfully update data");
+    public String updateStudent(String[] data, String oldID) {
+        String ID = data[0];
+        String Name = data[1];
+        double GPA = 0;
+        try {
+            GPA = Double.valueOf(data[2]).doubleValue();
+        }
+        catch (NumberFormatException e)
+        {
+            return "GPA is not number";
         }
 
+
+        String Address = data[3];
+        String Img = data[4];
+        String Note = data[5];
+
+        int order = getOrderOneStudent(oldID);
+        String str = isUpdatedDataValid(order, ID, GPA);
+        if (str.equals(""))
+        {
+            dataStudent.get(order).updateInforStudent(ID , Name, Img, Address, Note, GPA);
+            return "";
+        }
+
+        return str;
 
     }
 
